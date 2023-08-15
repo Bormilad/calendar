@@ -3,6 +3,7 @@ import './App.css';
 import React ,{ Component } from 'react'
 
 const date = new Date();
+//let date = new Date(2022, 8, 1);
 const months = [
     "Январь",
     "Февраль",
@@ -21,51 +22,68 @@ const months = [
 //const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 let monthDays = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", 16, 17, 18,
                         "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"];
-
+const month = date.getMonth();
+if (month == 1 || month == 3 || month == 5 || month == 8 || month == 10) {
+    monthDays.pop();
+    if (month == 1){
+        monthDays.pop();
+        monthDays.pop();
+    }
+}
 const weekDay = date.toString().split(" ")[0];
-console.log('-----' + weekDay)
+console.log('weekday=' + weekDay)
+console.log('day=' + date.getDay())
 
-let startDate = new Date(date.getYear() + 1900, date.getMonth(), 5);
+
+let startDate = new Date(date.getYear() + 1900, date.getMonth(), 1);
+
 
 let startWeekDay = startDate.toString().split(" ")[0];
+let startWeekDayInt = startDate.getDay();
 console.log("ST=" + startDate + " " + startWeekDay)
 
-if (startWeekDay == 'Tue'){
+//if (startWeekDay == 'Tue'){
+if (startWeekDayInt == 2){
     monthDays.unshift('-31');
 }
-if (startWeekDay == 'Wed'){
+//if (startWeekDay == 'Wed'){
+else if (startWeekDayInt == 3){
     monthDays.unshift('-31');
     monthDays.unshift('-30');
 }
 
-if (startWeekDay == 'Thu'){
-    monthDays.unshift('-31');
-    monthDays.unshift('-30');
-    monthDays.unshift('-29');
-}
-
-if (startWeekDay == 'Fri'){
+//if (startWeekDay == 'Thu'){
+else if (startWeekDayInt == 4){
     monthDays.unshift('-31');
     monthDays.unshift('-30');
     monthDays.unshift('-29');
-    monthDays.unshift('-28');
 }
 
-if (startWeekDay == 'Sut'){
+//if (startWeekDay == 'Fri'){
+else if (startWeekDayInt == 5){
     monthDays.unshift('-31');
     monthDays.unshift('-30');
     monthDays.unshift('-29');
     monthDays.unshift('-28');
-    monthDays.unshift('-27');
 }
 
-if (startWeekDay == 'Sun'){
+//if (startWeekDay == 'Sut'){
+else if (startWeekDayInt == 6){
     monthDays.unshift('-31');
     monthDays.unshift('-30');
     monthDays.unshift('-29');
     monthDays.unshift('-28');
     monthDays.unshift('-27');
-    monthDays.unshift('-25');
+}
+
+//if (startWeekDay == 'Sun'){
+else if (startWeekDayInt == 7){
+    monthDays.unshift('-31');
+    monthDays.unshift('-30');
+    monthDays.unshift('-29');
+    monthDays.unshift('-28');
+    monthDays.unshift('-27');
+    monthDays.unshift('-26');
 }
 
 //monthDays.unshift('-31');
@@ -75,10 +93,10 @@ if (startWeekDay == 'Sun'){
 //monthDays.unshift('-27');
 //monthDays.unshift('-26');
 
-monthDays.push('-1');
-monthDays.push('-2');
-monthDays.push('-3');
-monthDays.push('-4');
+//monthDays.push('-1');
+//monthDays.push('-2');
+//monthDays.push('-3');
+//monthDays.push('-4');
 //monthDays.push('-5');
 //monthDays.push('-6');
 
@@ -88,6 +106,26 @@ const weekDays3 = monthDays.splice(0, 7);
 const weekDays4 = monthDays.splice(0, 7);
 const weekDays5 = monthDays.splice(0, 7);
 const weekDays6 = monthDays.splice(0, 7);
+if(weekDays6.length < 7){
+    let lastI = 7;
+    if(weekDays5.length < 7){
+        let len = weekDays5.length;
+        for(let i = 1; i < 8 - len; i++){
+            weekDays5.push(i)
+            lastI = i;
+        }
+
+    }
+    let max = Math.abs(Math.min(...weekDays6));
+    if(max == Infinity || lastI == 7){
+        max = 0;
+    } else {
+        max = lastI;
+    }
+    for(let i= max + 1; i < 8; i++){
+        weekDays6.push(-i)
+    }
+}
 //const weekDays5 = ["29", "30", "31", "4", "5", "6", "8"];
 
 class CalendarCl extends Component{
@@ -124,73 +162,6 @@ class CalendarCl extends Component{
                   <span class="ui-datepicker-month">{day}</span>&nbsp;<span class="ui-datepicker-year">{year}</span>&nbsp;
                 </div>
               </div>
-              <table class="ui-datepicker-calendar">
-                  <col/>
-                  <col/>
-                  <col/>
-                  <col/>
-                  <col/>
-                  <col class="ui-datepicker-week-end"/>
-                  <col class="ui-datepicker-week-end"/>
-                <thead>
-                  <tr>
-                    <th scope="col" title="Понедельник">Пн</th>
-                    <th scope="col" title="Вторник">Вт</th>
-                    <th scope="col" title="Среда">Ср</th>
-                    <th scope="col" title="Четверг">Чт</th>
-                    <th scope="col" title="Пятница">Пт</th>
-                    <th scope="col" title="Суббота">Сб</th>
-                    <th scope="col" title="Воскресенье">Вс</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="ui-datepicker-other-month">27</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td class={cls}>8</td>
-                    <td>9</td>
-                    <td>10</td>
-                    <td>11</td>
-                    <td>12</td>
-                    <td>13</td>
-                  </tr>
-                  <tr>
-                      <td class={cls}>14</td>
-                      <td>15</td>
-                      <td>16</td>
-                      <td>17</td>
-                      <td>18</td>
-                      <td>19</td>
-                      <td>20</td>
-                  </tr>
-                  <tr>
-                    <td>21</td>
-                    <td class="">22</td>
-                    <td>23</td>
-                    <td>24</td>
-                    <td>25</td>
-                    <td>26</td>
-                    <td>27</td>
-                </tr>
-                <tr>
-                      <td>28</td>
-                      <td class="">29</td>
-                      <td>30</td>
-                      <td>31</td>
-                      <td>01</td>
-                      <td>02</td>
-                      <td>03</td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
         </>
         )
